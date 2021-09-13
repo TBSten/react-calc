@@ -27,6 +27,8 @@ body,
   background: white;
   color: #474747;
   font-size: 50px;
+  text-align: right;
+  word-break: break-all;
 }
 .calc .input {
   display: grid;
@@ -41,6 +43,9 @@ body,
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: repeat(4, 1fr);
+  border-left: solid 2px #929292;
+  margin-left: 3px;
+  padding-left: 3px;
 }
 
 button {
@@ -49,13 +54,14 @@ button {
   color: white;
   outline: none;
   border: solid 2px #bebebe;
-  border-radius: 5px;
 }
 button:hover {
   background: #b4b4b4;
 }
 button:active {
   background: #585858;
-  opacity: 1;
+}
+button[disabled] {
+  opacity: 0.3;
 }
 /*# sourceMappingURL=index.css.map */
