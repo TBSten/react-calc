@@ -12,6 +12,10 @@ NPM(Node.js)とgitをインストールする必要があります。
 以下のコマンドを叩く
 ```
 git clone https://github.com/TBSten/react-calc.git
+<<<<<<< HEAD
+=======
+cd react-calc
+>>>>>>> master
 npm install
 ```
 
