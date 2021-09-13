@@ -1,71 +1,86 @@
 import {useState} from "react" ;
 import Button from "./components/Button" ;
 
-function calc(l,o,r){                     //左辺,演算子,右辺を受け取って計算結果を返す
-  let ans = "計算エラーです" ;
-  try{
-    if(o === "+"){
-      ans = l+r;
-    }else if(o === "-"){
-      ans = l-r;
-    }else if(o === "*"){
-      ans = l*r;
-    }else if(o === "/"){
-      ans = l/r;
-    }
-  }catch(e){
-    console.error(e);
+function calc(l,o,r){
+  let ans = "エラー" ;
+  if(o === "+"){
+    ans = l+r;
+  }else if(o === "-"){
+    ans = l-r;
+  }else if(o === "*"){
+    ans = l*r;
+  }else if(o === "/"){
+    ans = l/r;
   }
   return ans ;
 }
 
 function App() {
-  const [left,setLeft] = useState(0) ;    //左辺 (0-9)
-  const [ope,setOpe] = useState(null);    //演算子 (+,-,*,/)
-  const [right,setRight] = useState(0) ;  //右辺 (0-9)
-  const [ans,setAns] = useState(null);    //答え 
+  const [left, setLeft] = useState(0) ;
+  const [ope, setOpe] = useState(null) ;
+  const [right, setRight] = useState(0) ;
 
-  function keyClicked(key){               //ボタンがクリックされたら
-    if(Number.isInteger(key)){            //もし数字が入力されたら
-      if(ope === null){                   //演算子入力前なら
-                                          //左辺に結合
-        setLeft(parseFloat(left+""+key));
+  const [ans, setAns] = useState(null);
+
+  function keyPressed(key){
+    if(Number.isInteger(key)){  //key が整数なら
+      if(ope === null){
+        //leftを書き換える
+        setLeft(parseFloat(left*10+key));
       }else{
-                                          //右辺に結合
-        setRight(parseFloat(right+""+key));
+        //rightを書き換える
+        setRight(parseFloat(right*10+key));
       }
-    }else if(key === "+" | key === "-" | key === "*" | key === "/"){
-                                          //もし演算子が入力されたら
-      setOpe(key);
-    }else if(key === "="){                //もし=が入力されたら
-      setAns(calc(left,ope,right));       //計算結果をansにセット
+    }else if(
+      key === "+" | 
+      key === "-" | 
+      key === "*" | 
+      key === "/"){             //keyが演算子なら
+        setOpe(key);
+    }else if(key === "="){      //keyが「=」なら
+      setAns(calc(left,ope,right));
+    }else if(key === "C"){
+      setLeft(0);
+      setOpe(null);
+      setRight(0);
+      setAns(null);
     }
   }
+
   return (
     <div className="calc">
       <header>電卓</header>
       <div className="display">
         {
-          ans !== null?
-          `計算結果：${ans}`
-          :
-          `${left} 
-            ${ope !== null ?ope:""} 
-            ${ope != null ?right:""} `
+          ans === null?
+            `${left} 
+             ${ope === null ? "" : ope} 
+             ${ope === null ? "" : right}`
+              :
+            `計算結果:${ans}`
         }
       </div>
       <div className="input">
         <div className="numbers">
           {
-            [7,8,9,4,5,6,1,2,3,0,".","="].map(el=>(
-              <Button text={el} onClick={()=>keyClicked(el)} key={el}/>
+            [7,8,9,4,5,6,1,2,3,0,"."].map(el=>(
+              <Button 
+                text={el} 
+                disabled={ans!==null}
+                onClick={()=>keyPressed(el)} key={el}/>
             ))
           }
+          <Button 
+            text={ans === null ? "=" : "C"} 
+            onClick={()=>keyPressed(ans === null ? "=" : "C")}/>
         </div>
         <div className="operators">
           {
             ["/","*","-","+"].map(el=>(
-              <Button text={el} onClick={()=>keyClicked(el)} key={el}/>
+              <Button 
+                text={el} 
+                disabled={ans!==null}
+                onClick={()=>keyPressed(el)} key={el}/>
             ))
           }
         </div>

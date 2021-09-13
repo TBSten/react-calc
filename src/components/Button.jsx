@@ -1,9 +1,10 @@
 
 
 export default function Button(props){
+    const {text,...other} = props ;
     return (
-        <button onClick={props.onClick}>
-            {props.text}
+        <button {...other}>
+            {text}
         </button>
     ) ;
 }
